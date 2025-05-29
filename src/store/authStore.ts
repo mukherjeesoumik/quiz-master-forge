@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { AuthState, User } from '../types';
 
 // Configure axios defaults
-axios.defaults.baseURL = process.env.VITE_API_URL || 'http://localhost:8000/api';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 axios.defaults.withCredentials = true;
 
 export const useAuthStore = create<AuthState>()(
@@ -21,7 +21,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           // Get CSRF token first
           await axios.get('/sanctum/csrf-cookie', {
-            baseURL: process.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000',
+            baseURL: import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000',
           });
           
           const response = await axios.post('/login', { email, password });
@@ -41,7 +41,7 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
         try {
           await axios.get('/sanctum/csrf-cookie', {
-            baseURL: process.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000',
+            baseURL: import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000',
           });
           
           const response = await axios.post('/register', { 
