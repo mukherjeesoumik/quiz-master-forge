@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,32 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom colors for the platform
+				purple: {
+					500: '#8B5CF6',
+					600: '#7C3AED',
+					700: '#6D28D9',
+				},
+				teal: {
+					500: '#14B8A6',
+					600: '#0D9488',
+					700: '#0F766E',
+				},
+				blue: {
+					500: '#3B82F6',
+					600: '#2563EB',
+					700: '#1D4ED8',
+				},
+				pink: {
+					500: '#EC4899',
+					600: '#DB2777',
+					700: '#BE185D',
+				},
+				orange: {
+					500: '#F97316',
+					600: '#EA580C',
+					700: '#C2410C',
 				}
 			},
 			borderRadius: {
@@ -84,11 +111,22 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out'
 			}
 		}
 	},
