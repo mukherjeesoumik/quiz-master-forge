@@ -9,6 +9,21 @@ import { AuthState, User } from '../types';
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 axios.defaults.withCredentials = true;
 
+// Mock user data for demo
+const MOCK_USER: User = {
+  id: 1,
+  name: 'Demo User',
+  email: 'demo@example.com',
+  role: 'student',
+  createdAt: new Date().toISOString(),
+};
+
+// Demo credentials
+const DEMO_CREDENTIALS = {
+  email: 'demo@example.com',
+  password: 'password123'
+};
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
@@ -18,6 +33,17 @@ export const useAuthStore = create<AuthState>()(
 
       login: async (email: string, password: string) => {
         set({ isLoading: true });
+        
+        // Check if using demo credentials
+        if (email === DEMO_CREDENTIALS.email && password === DEMO_CREDENTIALS.password) {
+          // Mock successful login
+          setTimeout(() => {
+            set({ user: MOCK_USER, isAuthenticated: true, isLoading: false });
+            toast.success('Login successful! (Demo Mode)');
+          }, 1000); // Simulate network delay
+          return;
+        }
+        
         try {
           // Get CSRF token first
           await axios.get('/sanctum/csrf-cookie', {
@@ -31,8 +57,13 @@ export const useAuthStore = create<AuthState>()(
           toast.success('Login successful!');
         } catch (error: any) {
           set({ isLoading: false });
-          const message = error.response?.data?.message || 'Login failed';
-          toast.error(message);
+          // If API is not available, show helpful message
+          if (error.code === 'ERR_NETWORK' || error.message?.includes('Network Error')) {
+            toast.error('Backend not available. Use demo@example.com / password123 for demo mode');
+          } else {
+            const message = error.response?.data?.message || 'Login failed';
+            toast.error(message);
+          }
           throw error;
         }
       },
